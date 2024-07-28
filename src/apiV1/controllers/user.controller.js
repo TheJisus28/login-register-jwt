@@ -126,8 +126,31 @@ const profile = async (req, res) => {
   }
 };
 
+const updateUsername = async (req, res) => {
+  try {
+    const { username: newUsername } = req.body;
+
+    // obtain the user from the middelware
+    const user = await UserModel.findeByEmail(req.email);
+    const updatedUser = await UserModel.changeName({
+      email: user.email,
+      username: newUsername,
+    });
+
+    return res.json({
+      ok: true,
+      msg: "Username updated",
+      body: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: "Error server" });
+  }
+};
+
 export const UserController = {
   register,
   login,
   profile,
+  updateUsername,
 };

@@ -7,6 +7,7 @@ const router = Router();
 router
   .post("/register", UserController.register)
   .post("/login", UserController.login)
-  .get("/profile", verifyToken, UserController.profile);
+  .get("/profile", verifyToken, UserController.profile)
+  .patch("/name", verifyToken, UserController.updateUsername);
 
 export default router;
