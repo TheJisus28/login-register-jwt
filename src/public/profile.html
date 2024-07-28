@@ -119,10 +119,6 @@
           $email.textContent = " " + email;
         })
         .catch((err) => {
-          if (!token) {
-            window.location.href = "/login";
-          }
-
           console.log(err);
         });
     </script>
