@@ -113,6 +113,7 @@ const login = async (req, res) => {
 // /api/v1/users/profile
 const profile = async (req, res) => {
   try {
+    console.log("req.email: " + req.email);
     const user = await UserModel.findeByEmail(req.email);
 
     return res.json({
@@ -130,10 +131,8 @@ const updateUsername = async (req, res) => {
   try {
     const { username: newUsername } = req.body;
 
-    // obtain the user from the middelware
-    const user = await UserModel.findeByEmail(req.email);
     const updatedUser = await UserModel.changeName({
-      email: user.email,
+      email: req.email,
       username: newUsername,
     });
 
@@ -148,9 +147,78 @@ const updateUsername = async (req, res) => {
   }
 };
 
+const updateEmail = async (req, res) => {
+  try {
+    const { email: newEmail } = req.body;
+    console.log("email extraido del req.body: " + newEmail);
+    const updatedUser = await UserModel.changeEmail({
+      email: req.email,
+      newEmail,
+    });
+
+    console.log("updatedUser.email: " + updatedUser.email);
+    const token = jwt.sign(
+      {
+        email: updatedUser.email,
+      },
+      JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return res.json({
+      ok: true,
+      msg: "User email updated",
+      body: updatedUser,
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: "Error server" });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const { password: newPassword } = req.body;
+
+    const updatedUser = await UserModel.changePassword({
+      email: req.email,
+      password: newPassword,
+    });
+
+    return res.json({
+      ok: true,
+      msg: "User email updated",
+      body: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: "Error server" });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const deletedUser = await UserModel.deleteUser(req.email);
+    return res.json({
+      ok: true,
+      msg: "User deleted succesfully",
+      body: deletedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ ok: false, msg: "Error server" });
+  }
+};
+
 export const UserController = {
   register,
   login,
   profile,
   updateUsername,
+  updateEmail,
+  updatePassword,
+  deleteUser,
 };
