@@ -42,10 +42,6 @@ cd your_repository
        USERNAME VARCHAR(50) NOT NULL
      );
 
-     INSERT INTO USERS (EMAIL, PASSWORD, USERNAME)
-     VALUES  ('tester@test.com', 'tester', 'tester'),
-            ('admin@admin.com', 'admin', 'admin');
-
      SELECT * FROM USERS;
      ```
 
@@ -78,9 +74,34 @@ The server will start at `http://localhost:3000` by default.
 
 ### Project Structure
 
-- **`index.js`**: Main server file that sets up routes and middleware.
-- **`apiV1/routes/user.router.js`**: Routes related to user management.
-- **`apiV1/routes/public.router.js`**: Routes for serving static files (HTML) for the user interface.
+login-register-jwt/
+│
+├── node_modules/
+├── src/
+│ ├── apiV1/
+│ │ ├── controllers/
+│ │ │ └── user.controller.js
+│ │ ├── database/
+│ │ │ ├── connection.database.js
+│ │ │ └── init.database.sql
+│ │ ├── middelwares/
+│ │ │ └── jwt.middelware.js
+│ │ ├── models/
+│ │ │ └── user.model.js
+│ │ ├── routes/
+│ │ ├── public.router.js
+│ │ └── user.router.js
+│ ├── public/
+│ ├── assets/
+│ ├── login.html
+│ ├── profile.html
+│ └── register.html
+├── .env
+├── .gitignore
+├── config.js
+├── package.json
+├── package-lock.json
+└── index.js
 
 ### Available Routes
 
