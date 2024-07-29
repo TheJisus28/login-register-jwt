@@ -8,7 +8,7 @@ router
   .post("/register", UserController.register)
   .post("/login", UserController.login)
   .get("/profile", verifyToken, UserController.profile)
-  .patch("/name", verifyToken, UserController.updateUsername)
+  .patch("/username", verifyToken, UserController.updateUsername)
   .patch("/email", verifyToken, UserController.updateEmail)
   .patch("/password", verifyToken, UserController.updatePassword)
   .delete("/delete", verifyToken, UserController.deleteUser);

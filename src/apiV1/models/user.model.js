@@ -54,8 +54,6 @@ const changeEmail = async ({ email, newEmail }) => {
   };
 
   const { rows } = await db.query(query);
-  console.log("rows del change email: ");
-  console.log(rows);
   return rows[0];
 };
 

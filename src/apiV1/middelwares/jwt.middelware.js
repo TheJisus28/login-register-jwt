@@ -15,7 +15,6 @@ export const verifyToken = (req, res, next) => {
 
   try {
     const { email } = jwt.verify(token, JWT_SECRET);
-    console.log("email sacado del token: " + email);
     req.email = email;
     next();
   } catch (err) {

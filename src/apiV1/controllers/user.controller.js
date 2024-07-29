@@ -1,10 +1,8 @@
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-
 import { UserModel } from "../models/user.model.js";
 import { JWT_SECRET } from "../../../config.js";
 
-// /api/v1/users/register
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -57,7 +55,6 @@ const register = async (req, res) => {
   }
 };
 
-// /api/v1/users/login
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -110,10 +107,8 @@ const login = async (req, res) => {
   }
 };
 
-// /api/v1/users/profile
 const profile = async (req, res) => {
   try {
-    console.log("req.email: " + req.email);
     const user = await UserModel.findeByEmail(req.email);
 
     return res.json({
@@ -150,13 +145,11 @@ const updateUsername = async (req, res) => {
 const updateEmail = async (req, res) => {
   try {
     const { email: newEmail } = req.body;
-    console.log("email extraido del req.body: " + newEmail);
     const updatedUser = await UserModel.changeEmail({
       email: req.email,
       newEmail,
     });
 
-    console.log("updatedUser.email: " + updatedUser.email);
     const token = jwt.sign(
       {
         email: updatedUser.email,
@@ -183,9 +176,12 @@ const updatePassword = async (req, res) => {
   try {
     const { password: newPassword } = req.body;
 
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(newPassword, salt);
+
     const updatedUser = await UserModel.changePassword({
       email: req.email,
-      password: newPassword,
+      password: hashedPassword,
     });
 
     return res.json({
